@@ -13,10 +13,10 @@
             "topic_id": "tolerancia-a-fallos",
             "type": "simple",
             "utters": [
-                "utter_pregunta_atributos/tolerencia-a-fallos"
+                "utter_pregunta_atributos/tolerancia-a-fallos"
             ],
             "examples": [
-                "utter_pregunta_atributos/tolerencia-a-fallos_ejemplo"
+                "utter_pregunta_atributos/tolerancia-a-fallos_ejemplo"
             ],
             "sub_topics": [
             ]

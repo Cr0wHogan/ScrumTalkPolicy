@@ -6,8 +6,8 @@ from tour.visitor.visitor import Visitor
 
 class SequentialIterator(Iterator):
 
-    def __init__(self, intents_to_topics: Dict[str, str], flow: List[Topic]):
-        super().__init__(intents_to_topics, flow)
+    def __init__(self, flow: List[Topic]):
+        super().__init__(flow)
 
     def next(self) -> str:
         while len(self._to_explain) > 0 and self._to_explain[-1].is_explained:
@@ -28,8 +28,8 @@ class SequentialIterator(Iterator):
 
 class GlobalIterator(Iterator):
 
-    def __init__(self, intents_to_topics: Dict[str, str], flow: List[Topic]):
-        super().__init__(intents_to_topics, flow)
+    def __init__(self,flow: List[Topic]):
+        super().__init__(flow)
 
     """
     Iterates over the conversation flow not entering in the subtopics of the topic
@@ -55,8 +55,8 @@ class GlobalIterator(Iterator):
 
 class NeutralIterator(Iterator):
 
-    def __init__(self, intents_to_topics: Dict[str, str], flow: List[Topic]):
-        super().__init__(intents_to_topics, flow)
+    def __init__(self, flow: List[Topic]):
+        super().__init__(flow)
 
     """
     Iterates over the conversation flow entering only in the first subtopic of the topic

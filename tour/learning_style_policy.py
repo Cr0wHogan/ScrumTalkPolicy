@@ -63,14 +63,14 @@ def create_iterator(
 ) -> Iterator:
     with open(path_flow) as file:
         flow = [parse_topic(raw_topic) for raw_topic in json.load(file)]
-    with open(path_intents_to_topics) as file:
-        intents_to_topics = json.load(file)
+    #with open(path_intents_to_topics) as file:
+    #    intents_to_topics = json.load(file)
     if learning == "global":
-        return GlobalIterator(intents_to_topics, flow)
+        return GlobalIterator(flow)
     if learning == "sequential":
-        return SequentialIterator(intents_to_topics, flow)
+        return SequentialIterator(flow)
     if learning == "neutral":
-        return NeutralIterator(intents_to_topics, flow)
+        return NeutralIterator(flow)
 
 
 def functions_builder() -> Node:

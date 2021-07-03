@@ -5,12 +5,12 @@ from tour.topic.topics import Topic
 
 
 class Iterator(metaclass=abc.ABCMeta):
-    def __init__(self, intents_to_topics: Dict[str, str], flow: List[Topic]):
-        all_topics = {}
+    def __init__(self, flow: List[Topic], name: str = ""):
+        self._name = name
+        self._all_topics = {}
+        # Obtains all the topics and examples that the tour contains.
         for topic in flow:
-            all_topics.update(topic.get())
-        self._intents_to_topics = {intent: all_topics[topic] for
-                                   intent, topic in intents_to_topics.items()}
+            self._all_topics.update(topic.get())
 
         self._flow = flow
         self._to_explain = [topic for topic in reversed(flow)]
@@ -18,7 +18,7 @@ class Iterator(metaclass=abc.ABCMeta):
         self._current_topic = None
 
     def in_tour(self, intent_name: str) -> bool:
-        return intent_name in self._intents_to_topics
+        return intent_name in self._all_topics
 
     @abc.abstractmethod
     def next(self) -> str:
@@ -43,7 +43,7 @@ class Iterator(metaclass=abc.ABCMeta):
         return self._to_explain.copy()
 
     def get_intents_to_topic(self) -> Dict:
-        return self._intents_to_topics.copy()
+        return self._all_topics.copy()
 
     def is_older_topic(self, topic: Topic) -> bool:
         if topic in self._to_explain:
@@ -65,7 +65,7 @@ class Iterator(metaclass=abc.ABCMeta):
 
     def jump_to_topic(self, topic: Topic):
         # Jumps to the specified topic
-        if topic.get_id() in self._intents_to_topics:
+        if topic.get_id() in self._all_topics:
             while len(self._to_explain) == 0 or self._to_explain[-1] != topic:
                 if len(self._to_explain) > 0:
                     self._to_explain.pop()
