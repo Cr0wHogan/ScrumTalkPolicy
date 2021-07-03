@@ -1,364 +1,387 @@
-version: "2.0"
-
+version: '2.0'
+config:
+  store_entities_as_slots: true
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
 intents:
-  # ---Generales---
-  - affirm
-  - deny
-  - greet
-  - goodbye
-  - no_entiendo
-  - explicame_tema
-  - dame_ejemplo
-  - change_current_flow
-
+- pregunta_concepto:
+    use_entities: true
+- pregunta_atributos:
+    use_entities: true
+- pregunta_patrones:
+    use_entities: true
+- pregunta_patrones_poo:
+    use_entities: true
+- affirm
+- deny
+- goodbye
+- greet
+- explicame_tema
+- dame_ejemplo
+- change_current_flow
+- no_entiendo
 entities:
-  - tema
+- atr-calidad
+- concepto
+- patron_arquitectonico
+- patron_poo
+- patron
+slots:
+  concepto:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: true
+  patron:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: true
+  atr-calidad:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: true
 responses:
-  # ---Generales---
+  utter_pregunta_concepto/patron:
+  - text: |-
+      Los patrones arquitectónicos dan una descripción de los elementos y el tipo de relación que tienen juntocon un conjunto de restricciones sobre cómo pueden ser usados.
+      Un patrón arquitectónico expresa un esquema de organización estructural esencial para un sistema de software, que consta de subsistemas, sus responsabilidades e interrelaciones.
+      En comparación con los patrones de diseño, los patrones arquitectónicos tienen un nivel de abstracción mayor.
+  utter_pregunta_concepto/patron_clarificacion:
+  - text: Mirá, pensalos cómo las estructuras más utilizadas para resolver problemas muy comunes a la hora de diseñar la arquitectura de tu solución.
+  utter_pregunta_concepto/patrones_listado:
+  - text: |-
+      Los patrones más comunes son:
+      Capas (Layered), Cliente-Servidor (Client-server), Maestro-Esclavo (Master-slave), Pipe-filter, Broker, Peer-to-Peer (P2P), Event-bus, MVC, Blackboard, Interpreter
+  utter_pregunta_concepto/scrum:
+  - text: |-
+      La metodología Scrum es un framework que se utiliza dentro de equipos que manejan proyectos complejos.
+       Es decir, se trata de una metodología de trabajo ágil que tiene como finalidad la entrega de valor en períodos cortos de tiempo y para ello se basa en tres pilares: la transparencia, inspección y adaptación.
+  utter_pregunta_concepto/scrum_clarificacion:
+  - text: |-
+      Pensalo como un conjunto de reglas y prácticas para poder organizar el trabajo de mucha gente.
+       Cada persona tiene un rol, con distintas personalidades y hay eventos importantes que agrupan distintos roles.
+  utter_pregunta_concepto/agil:
+  - text: Las metodologías ágiles son un conjunto de métodos que permiten adaptar el modo de trabajo a las condiciones del proyecto, aportando flexibilidad, eficiencia y, por lo tanto, logrando un mejor producto a menor coste.
+  utter_pregunta_concepto/agil_clarificacion:
+  - text: Pensalos cómo la manera de combinar la velocidad y creatividad con las estructuras tradicionales de las empresas grandes.
+  utter_pregunta_concepto/fdd:
+  - text: |-
+      Feature-driven development (FDD) es un proceso para desarrollo de software de forma iterativa e incremental
+       El proceso comienza por los requerimientos y el modelado, siguiendo por el diseño y construcción en base a incrementos
+  utter_pregunta_concepto/atr-calidad:
+  - text: Los atributos de calidad (también cualidades del software) son características no funcionales que se consideran deseables en un sistema de software.
+  - text: Un atributo de calidad es una propiedad medible de un sistema, que indica qué tan bien el sistema satisface las necesidades de las partes interesadas.
+  utter_pregunta_concepto/hook:
+  - text: |-
+      Hooking es un concepto que permite modificar el comportamiento de un programa.
+       Es la posibilidad que proporciona el código de cambiar comportamiento original sin modificar código de la clase correspondiente.
+       Esto se realiza sobreescribiendo los métodos hook.
+  utter_pregunta_concepto/req_func:
+  - text: Los requerimientos funcionales de un sistema son aquellos que describen cualquier actividad/servicio que éste deba realizar.
+  utter_pregunta_concepto/req_func_ejemplo:
+  - text: |-
+      Un ejemplo de requerimiento funcional, sería:
+       El sistema permitirá a los usuarios autorizados ingresar planes y cronogramas de proyecto
+  - text: |-
+      Por ejemplo,
+       El sistema permitirá el envío automatizado de cartas de entrega de órdenes directamente al almacén.
+  utter_pregunta_concepto/req_no_func:
+  - text: Los requerimientos no funcionales representan características generales y restricciones de la aplicación o sistema que se esté desarrollando.
+  - text: |-
+      Se trata de requisitos que no se refieren directamente a las funciones específicas suministradas por el sistema (características de usuario), sino a las propiedades del sistema:
+       rendimiento, seguridad, disponibilidad.
+  utter_pregunta_concepto/req_no_func_ejemplo:
+  - text: |-
+      Por ejemplo,
+       Todas las comunicaciones externas entre los servidores de datos, la aplicación y el cliente del sistema  deben estar cifradas utilizando el algoritmo RSA.
+       Es un ejemplo de RNF que puede encasillarse en el atributo de calidad de Seguridad.
+  utter_pregunta_concepto/diferencia_req_func_no_func:
+  - text: Un requisito funcional describe lo que debe hacer un sistema, mientras que los requisitos no funcionales imponen restricciones sobre cómo lo hará el sistema.
+  utter_pregunta_patrones/capas:
+  - image: https://miro.medium.com/max/376/1*jMWk_JqqyyloVPhTs_Zd1A.png
+    text: |-
+      Este patrón se puede utilizar para estructurar programas que se pueden descomponer en grupos de subtareas, cada una de las cuales se encuentra en un nivel particular de abstracción.
+       Cada capa proporciona servicios a la siguiente capa superior.
 
-  utter_greet:
-    - text: "¡Hola! Estoy aquí para guiarte en el proceso Scrum. ¿Querés realizar un recorrido?"
+       Las 4 capas más comúnmente encontradas de un sistema de información general son las siguientes:
+       Capa de presentación, Capa de aplicación, Capa de lógica de negocios, Capa de acceso a datos.
+  utter_pregunta_patrones/cliente-servidor:
+  - image: https://miro.medium.com/max/568/1*4xX_WQQuD2u0PMK5bcWFkQ.png
+    text: |-
+      Este patrón consiste en dos partes; un servidor y múltiples clientes.
+       El componente del servidor proporcionará servicios a múltiples componentes del cliente.
+       Los clientes solicitan servicios del servidor y el servidor proporciona servicios relevantes a esos clientes.
+       Además, el servidor sigue escuchando las solicitudes de los clientes.
+  utter_pregunta_patrones/maestro-esclavo:
+  - image: https://miro.medium.com/max/1084/1*lsK9QntZl2d5oLojwRGXDg.png
+    text: |-
+      Este patrón consiste en dos partes; maestro y esclavos.
+       El componente maestro distribuye el trabajo entre componentes esclavos idénticos y calcula el resultado  final de los resultados que devuelven los esclavos.
+  utter_pregunta_patrones/pipe-filter:
+  - image: https://miro.medium.com/max/1400/1*qikehZcDhhl_wWsqeI_nvg.png
+    text: |-
+      Este patrón se puede usar para estructurar sistemas que producen y procesan una secuencia de datos.
+       Cada paso de procesamiento se incluye dentro de un componente de filtro.
+       Los datos que se procesarán se pasan a través de las tuberías.
+       Estas tuberías se pueden utilizar para el almacenamiento en búfer o con fines de sincronización.
+  utter_pregunta_patrones/broker:
+  - image: https://miro.medium.com/max/1400/1*1qRQZjLRAd0yY_T9p2OgBw.png
+    text: |-
+      Este patrón se usa para estructurar sistemas distribuidos con componentes desacoplados.
+       Estos componentes pueden interactuar entre sí mediante invocaciones de servicios remotos.
+       Un componente de intermediario es responsable de la coordinación de la comunicación entre los componentes.
+  utter_pregunta_patrones/peer-to-peer:
+  - image: https://miro.medium.com/max/520/1*ROvkckSTw1UncrbQSmUJUQ.png
+    text: |-
+      En este patrón, los componentes individuales se conocen como pares.
+       Los pares pueden funcionar tanto como un cliente, solicitando servicios de otros pares, y como un servidor, proporcionando servicios a otros pares.
+       Un par puede actuar como un cliente o como un servidor o como ambos, y puede cambiar su rol dinámicamente con el tiempo.
+  utter_pregunta_patrones/event-bus:
+  - image: https://miro.medium.com/max/1264/1*DOZ4nVR9zkJm-EnXT3KOGQ.png
+    text: |-
+      Este patrón trata principalmente con eventos y tiene 4 componentes principales: 
+       fuente de evento, escucha de evento, canal y bus de evento.
 
-  utter_end_tour:
-    - text: "Eso es sería todo el recorrido por las distintas fases del proceso, ante cualquier duda que tengas sobre Scrum ya sabes donde encontrarme."
+       Las fuentes publican mensajes en canales particulares en un bus de eventos.
+       Los oyentes se suscriben a canales particulares.
+       Los oyentes son notificados de los mensajes que se publican en un canal al que se han suscrito anteriormente.
+  utter_pregunta_patrones/mvc:
+  - image: https://miro.medium.com/max/1400/1*OP0CS6O5Sb66jpc-H-IuRQ.png
+    text: |-
+      Este patrón, también conocido como patrón MVC, divide una aplicación interactiva en 3 partes, como:
+       Modelo: contiene la funcionalidad y los datos básicos,
+       Vista: muestra la información al usuario (se puede definir más de una vista),
+       Controlador: maneja la entrada del usuario.
 
-  utter_goodbye:
-    - text: "Adiós!"
-    - text: "Hasta pronto!"
+       Esto se hace para separar las representaciones internas de información de las formas en que se presenta y acepta la información del usuario.
+       Desacopla los componentes y permite la reutilización eficiente del código.
+  utter_pregunta_patrones/blackboard:
+  - image: https://miro.medium.com/max/1060/1*ArbMx7A21I47llvwUTiSDg.png
+    text: |-
+      Este patrón es útil para problemas para los que no se conocen estrategias de solución deterministas.
+       El patrón de pizarra consta de 3 componentes principales:
+       Pizarra: una memoria global estructurada que contiene objetos del espacio de solución,
+       Fuente de conocimiento: módulos especializados con su propia representación,
+       Componente de control: selecciona, configura y ejecuta módulos.
 
-  utter_start_tour:
-    - text: "Genial! Por favor acompáñame al hall así arrancamos el tour."
-  
-  utter_example:
-    - text: "Ejemplo de Product Backlog"
-  
-  utter_sin_ejemplos:
-    - text: "No hay mas ejemplos sobre este tema"
-
-  utter_sin_question:
-    - text: "No hay mas preguntas sobre este tema"
-
-  utter_cross_examine_jump_global:
-    - text: "Queres que explique desde ese tema y omitamos los temas intermedios o solo te explico ese tema particular"
-  
-  utter_cross_examine_jump_sequential:
-    - text: "Queres que te explique todo de nuevo apartir de ese tema o solo te explico de nuevo ese tema particular"
-  
-  utter_cross_examine_example:
-    - text: "Queres que te de un ejemplo de este tema o queres que te haga otra explicacion"
-
-  utter_ask:
-    - text: "Bueno ahora vamos con unas preguntas de estos temas para ver cuanto sabes"
-
-  utter_cross_examine_tema_proceso_scrum:
-    - text: "Proceso Scrum es tomar Fernet"
-
-  utter_cross_examine_tema_product_backlog:
-    - text: "Product Backlog es un llavero con tu nombre"
-
-  utter_cross_examine_tema_product_owner:
-    - text: "Product owner es Product owner"
-
-  utter_cross_examine_tema_epic: 
-    - text: "Epica es Epica"
-
-  utter_cross_examine_tema_scrum_master: 
-    - text: "Scrum Master es Scrum Master"
-  
-  utter_cross_examine_tema_sprint_backlog:
-    - text: "Sprint Backlok es Sprint backlog"
-
-  utter_cross_examine_tema_disenio_backlog:
-    - text: "Diseño backlog es jugar al futbol"
-
-  utter_ask_good:
-    - text: "Correcto ahi te va otra"
-
-  utter_ask_bad:
-    - text: "Nono le errraste, es esto en realidad es"
-
-  utter_default:
-    - text: "default"
-  
-
-  # ---Introduccion---
-
-  utter_proceso_scrum:
-    - text: "En nuestro proyecto utilizamos el marco de trabajo Scrum, a continuación vamos a 
-    \nrealizar un recorrido por todas las salas para que puedas ver que actividades se realizan
-    \nen cada una de ellas y que artefactos se usan en cada etapa del proceso.
-    \nPero antes, tenes que saber que en Scrum un proyecto se ejecuta en Sprints.
-    \nCada Sprint tiene que proporcionar un resultado completo, un incremento de producto final 
-    \nque sea susceptible de ser entregado con el mínimo esfuerzo al cliente cuando lo solicite. 
-    \nEl proceso parte de la lista de requisitos priorizada del producto, que 
-    \nactúa como plan del proyecto. En esta lista el Product Owner prioriza los objetivos balanceando 
-  \nel valor que le aportan respecto a su coste y quedan repartidos en iteraciones y entregas.
-  \nSeguime que te voy a mostrar la sala donde realizamos el planning al comienzo del Sprint."
-
-  utter_proceso_scrum_2:
-    - text: "Como mencioné antes, Scrum es un marco de trabajo que se ejecuta en Sprints. Estos son 
-    \nciclos temporales cortos y de duración fija, normalmente duran entre 2 y 4 semanas.
-    \nAl final de cada Sprint se debe obtener un incremento de producto final para ser entregado 
-    \nal cliente cuando lo solicite.El proceso comienza con la planificación del Sprint, durante 
-    \nesta actividad el cliente presenta la lista de requisitos del producto\n
-  y el equipo selecciona los más prioritarios que prevé que podrá completar en la iteración. Además, 
-  \nelabora la lista de tareas necesarias para desarrollar los requisitos seleccionados, que luego 
-  \nse llevan a cado durante la ejecución del Sprint.
-  \nEl último dia de la iteración se realiza la reunión de revisión, en la cual el equipo presenta 
-  \nal cliente los requisitos completados, en forma de incremento de producto, y se realiza una 
-  \nretrospectiva para reflexionar sobre el último Sprint e identificar posibles mejoras
-  \npara el próximo. Entendiste, te parece que avancemos hacia la sala de planning?"
-
-  # ---ProductBacklog---
-
-  utter_product_backlog:
-    - text: "En esta sala realizamos el Sprint Planning donde participa todo el equipo Scrum, 
-    \nsirve para inspeccionar el Product Backlog y que el equipo de desarrollo seleccione del 
-    \nmismo los ítems en los que va a trabajar durante el Sprint. El Product Backlog es un 
-    \ninventario que contiene cualquier tipo de trabajo que haya que hacer en el producto:
-    \nrequerimientos, casos de uso, tareas y dependencias. Este artefacto debe ser gestionado 
-    \nen exclusiva por el Product Owner. Entendiste que es Product Backlog?"
-
-  utter_product_backlog_2:
-    - text: "El Product Backlog básicamente es una lista, en cualquier formato,
-    \nque contiene todos los requerimientos que necesitamos implementar en el
-    \nproducto. Es la principal fuente de información sobre el producto en Scrum.
-    \nAhora te quedo mas claro?"
-
-  utter_product_owner:
-    - text: "Genial, como ya te mencione el Product Backlog es gestionado por el Product Owner, 
-    \nque es la persona que representa a los stakeholders. A través del Product Backlog, 
-    \ngestionar el flujo de valor del producto. El Product Owner es un perfil con capacidad 
-    \nde visión de negocio, así como habilidades sociales para la entrevista, como puede ser 
-    \nel uso de preguntas abiertas, la empatía y la reformulación. Es un rol que está muy pegado al
-    \nnegocio a través de los clientes o a personas que tienen relación con ellos.
-    \nContinuo con la explicación o tenes alguna duda?"
-    
-  utter_product_owner_2:
-    - text: "Como mencione antes, el Product Owner representa los stakeholders, estas son las 
-    \npersonas que hacen posible el proyecto y para quienes el proyecto producirá el beneficio 
-    \nacordado que justifica su desarrollo, por ejemplo: clientes, proveedores, etc. Es un rol que 
-    \nestá muy pegado al negocio a través de los clientes o a personas que tienen relación con ellos, 
-    \ndebe descubrir sus necesidades y buscar soluciones a las mismas. Para ello utiliza el 
-    \nProduct Backlog, donde se detalla qué debe realizarse para cubrir esa necesidad. 
-    \nCada elemento del Product Backlog es un aporte de valor completo para el cliente. 
-    \nContinuo con el tour?"
-
-  utter_epica:
-    - text: "Dentro del Product Backlog, los requerimientos del cliente se traducen a épicas que son 
-    \nun conjunto de trabajo grande que puede dividirse en historias de usuario en función de las 
-    \nnecesidades o solicitudes de los clientes o usuarios finales. Implementar una épica suele 
-    \nllevar dos o más sprints. Entendiste, te parece que avancemos hacia la oficina?"
-
-  utter_epica_2:
-    - text: "Una Épica puede visualizarse como una historia de usuario que aún no se ha detallado, 
-    \nes demasiado grande o todavía presenta mucha incertidumbre y, por lo tanto, no se puede 
-    \ntransformar en un incremento del producto. Debe dividirse en User Stories más pequeñas.
-    \nAhora si acompañame a la oficina."
-
-  # ---SprintPlanning---
-
-  utter_scrum_master:
-    - text: "En esta oficina trabaja al Scrum Master que es el responsable de que Scrum sea 
-    \nentendido y bien aplicado dentro de la organización. Tiene dos funciones principales dentro 
-    \ndel marco de trabajo: gestionar el proceso Scrum y ayudar a eliminar impedimentos que 
-    \npuedan afectar a la entrega del producto.
-    \nAdemás, se encarga de las labores de mentoring y formación, coaching y de facilitar reuniones
-    \ny eventos si es necesario. Volvamos a la sala de planning que te muestro que otros
-    \nartefactos se usan durante la etapa de planificación."
-
-  utter_scrum_master_2:
-    - text: "El Scrum Master es básicamente un entrenador y facilitador de equipos Scrum. 
-    \nPara que entiendas que hace la persona con este rol te voy a explicar sus dos 
-    \nfunciones principales mas detalladamente:\n
-    Gestionar el proceso Scrum: el Scrum Master se encarga de gestionar y asegurar que el proceso 
-    \nScrum se lleva a cabo correctamente, así como de facilitar la ejecución del proceso y sus mecánicas.
-    \nEliminar impedimentos: esta función del Scrum Master indica la necesidad de ayudar a eliminar 
-    \nprogresiva y constantemente impedimentos que van surgiendo en la organización y que afectan
-    \na su capacidad para entregar valor, así como a la integridad de esta metodología. 
-    \nVamos a la sala de planning?"
-
-  utter_sprint_backlog:
-    - text: "El Sprint Backlog es un artefacto donde podemos visualizar los ítems que el equipo de 
-    \ndesarrollo seleccionó del Product Backlog y se comprometió a realizar durante el desarrollo 
-    \ndel Sprint, por lo tanto este elemento está gestionado por el Development Team. Su propósito 
-    \nes mantener la transparencia dentro del desarrollo, actualizándolo durante toda la iteración 
-    \nespecialmente a través de los daily Scrums. Entendiste que es el Sprint Backlog?"
-
-  utter_sprint_backlog_2:
-    - text: "El Sprint Backlog es el conjunto de tareas seleccionadas del Product Backlog durante 
-    \nel sprint planning para el Sprint actual, es decir, las tareas necesarias para realizar un 
-    \nincremento de producto. En este artefacto para cada uno de los requisitos se muestran sus tareas, 
-    \nel esfuerzo pendiente para finalizarlas y la autoasignación inicial que se han hecho los miembros del equipo. 
-    \nTambién permite ver con que tareas el equipo esta teniendo problemas y no puede avanzar para poder tomar 
-    \ndecisiones al respecto. Sigo con la siguiente explicación?"
-
-  utter_disenio_backlog:
-    - text: "Genial, Para el diseño de este artefacto se siguen lo siguientes pasos:
-    \nEn primer lugar, se definen los temas. Estos deben ser generales y cada uno de ellos puede ser
-    \nparte de distintas iniciativas. Luego, se definen las iniciativas u objetivos comunes relacionado
-    \ncon un tema. Puede ser que una misma iniciativa comparta dos temas.
-    \nA continuacion se definen todas las épicas que se requieren para perseguir ese objetivo en común
-    \nque hemos marcado en el tema. Este proceso se realiza en conjunto con los requerimientos de los clientes.
-    \nEn cuarto lugar se divide cada épica en historias de usuarios. En este paso, es fundamental la 
-    \ncolaboración del cliente, es necesario ponerse en su lugar para adaptarse a lo que el quiere
-    \nhacer, tal y como él mismo lo solicite.
-    \nPor ultimo se dividen a su vez las historias de usuario definidas en el paso anterior en tareas o 
-    \nactividades para ejecutarlas. El equipo de desarrollo seguirá estas tareas, por ejemplo, en un
-    \nScrum Board. Se seleccionan así las tareas del backlog para ese Sprint o iteración. 
-    \nContinuamos o necesitas un ejemplo?"
-
-  utter_disenio_backlog_2:
-    - text: "Para que entiendas el proceso para diseñar el backlog, tenes que tener en cuenta que:
-    \nEn primer lugar se definen los temas e iniciativas, piensa esto como objetivos a largo plazo con un 
-    \nenfoque más amplio que tendrá un impacto más significativo en el rendimiento de tu empresa. Supongamos
-    \nque deseas entrar en un nuevo mercado, por ejemplo, el mercado de software de gestión de proyectos.
-    \nAsí que entrar en el mercado de software de gestión de proyectos es tu iniciativa ágil/tema de alto nivel. 
-    \nAhora, vamos a desglosar ese objetivo en dos épicas que son:
-    \nNuevas características: desarrollar nuevas características para la gestión de proyectos Agile.
-    \nMejorar nuestras características actuales para que sean adecuadas para los gerentes de proyecto.
-    \nPor último,necesitas desglosarla la épica en pequeñas solicitudes que irán entrando relativamente rápido 
-    \nen tu flujo de trabajo. 
-    \nVolviendo al ejemplo, vamos a dividir la épica definida en el paso anterior 'Desarrollar nuevas 
-    \ncaracterísticas para la gestión de proyectos Agile':
-    \nHerramientas de investigación PM.
-    \nNuevas características diseño/concepto.
-    \nDesarrollo de nuevas características.
-    \nLa realización de todas estas pequeñas tareas te ayudará a completar la épica. Por otro lado, completar 
-    \nlas iniciativas te ayudará a acercarte un paso más al objetivo del tema/iniciativa.
-    \nPara que comprendas bien estos conceptos voy a explicarte que es una historia de usuario y una tarea. 
-    \nTe parece bien?"
-
-  utter_user_story:
-    - text: "Una historia de usuario es la descripción funcional utilizada en las metodologías ágiles para
-    \nespecificar el desarrollo de una característica. Estas definen lo que se debe construir en el proyecto
-    \nde software, tienen una prioridad asociada definida por el cliente de manera de indicar cuales son las
-    \nmás importantes para el resultado final, serán divididas en tareas y su tiempo será estimado por los
-    \ndesarrolladores. Necesitas un ejemplo de esto o avanzamos al concepto de tarea?"
-
-  utter_user_story_2:
-    - text: "Las historias de usuario son descripciones cortas y simples de una característica contada desde 
-    \nla perspectiva de la persona que desea la nueva capacidad. Por lo general, siguen una plantilla simple:
-    \n\t Como <perfil> quiero <algún objetivo> para que <motivo> 
-    \nPor ejemplo, las historias de usuario pueden tener este aspecto: Como gestor, quiero poder comprender 
-    \nel progreso de mis compañeros, para poder informar sobre nuestros éxitos y fallos. Esta estructura 
-    \nno es obligatoria, pero resulta de ayuda para establecer una definición de Done. Cuando ese perfil puede 
-    \nalcanzar su valor deseado, la historia está completa. Seguimos con las tareas?"
-
-  utter_tarea:
-    - text: "Las tareas son elementos técnicos necesarios para que una Historia de Usuario se transforme en 
-    \nun incremento del producto. Necesitas un ejemplo o sigo?"
-
-  utter_tarea_2:
-    - text: "Una tarea no es parte del resultado del proyecto, es más bien el medio para producir el resultado. 
-    \nPor ejemplo en la historia de usuario: Como usuario quiero buscar en las ofertas de trabajo para ver
-    \ncuales me interesan, podemos identificar las siguientes tareas técnicas: 
-    \nCrear UI de presentación de resultados.
-    \nCrear los métodos de consulta a BBDD para que retornen resultados.
-    \nMostrar un mensaje si no se encuentran resultados con los criterios de búsqueda. 
-    \nAhora seguime a la sala de desarrollo por favor."
-
-  # ---SprintDesarrollo---
-
-  utter_development_team:
-    - text: "En esta sala el Development Team trabaja durante el desarrollo del Sprint en las tareas que se 
-    \nencuentran en el Sprint Backlog que te mostre antes. Este es un equipo multidisciplinar. Son un grupo 
-    \nde personas con las habilidades necesarias para transformar todos los ítems del Product Backlog en 
-    \nincrementos de desarrollo. La responsabilidad es exclusivamente de ellos ya que son los únicos que pueden 
-    \ncrear estos incrementos. Es un equipo estructurado y empoderado dentro de la organización para 
-    \nauto-organizarse y gestionar su propio trabajo. Esto se traduce en un equipo óptimo tanto en eficiencia 
-    \ncomo en productividad. Para hacer un seguimiento del progreso del Sprint Backlog, se realizan Daily 
-    \nMeetings en la sala de reuniones, acompañame hasta la misma."
-
-  utter_development_team_2:
-    - text: "El Development Team es un grupo de personade que trabajan juntas para entregar los incrementos
-    \nde productos requeridos en cada Sprint. Generalmente son entre 5 y 9 miembros. Las habilidades específicas
-    \nque necesitan suelen ser amplias y variarán según el contexto de su trabajo. 
-    \nSin embargo, los Developers siempre son responsables de: Crear un plan para el Sprint, inculcar calidad 
-    \nal adherirse a una Defición de Done, adaptar su plan cada día hacia el Objetivo del Sprint y responsabilizarse
-    \nmutuamente como profesionales. Ahora si vamos a la sala de reuniones."
-
-  utter_daily_meeting:
-    - text: "En esta sala se hacen las Daily Scrum o Daily Meeting, es una reunión diaria de 15 minutos fijos, 
-    \nindependientemente de la duración del Sprint. Su objetivo es evaluar diariamente el progreso y la tendencia
-    \ndel progreso hasta la finalización del Sprint, sincronizando las actividades y creando un plan para las 
-    \npróximas 24 horas. Continuo hacia la siguiente explicación o necesitas que te explique devuelta?"
-  
-  utter_daily_meeting_2:
-    - text: "Durante la reunión cada una de las personas del Development Team responden a las siguientes preguntas:
-    \n¿Qué hice ayer para contribuir al Sprint Goal? 
-    \n¿Qué voy a hacer hoy para contribuir al Sprint Goal? 
-    \n¿Tengo algún impedimento que me impida entregar? 
-    \nEsta reunión permite la inspección y adaptación a través de la auto-organización del equipo. Vamos a la sala 
-    \ndonde se encuentra el Scrum Board."
-
-  utter_scrum_board:
-    - text: "El equipo Scrum utiliza este tablero para organizar la gestión del proyecto. Cuenta con columnas que 
-    \nindican el estado de cada tarea y sirve para: 
-    \nDividir el proyecto en fases bien definidas.
-    \nConocer la efectividad del equipo.
-    \nMonitorear el desarrollo de las tareas, de acuerdo con los objetivos de cada iteración.
-    \nAplicar cambios para obtener los resultados esperados.
-    \nDinamizar la actividad.
-    \nEntendiste?"
-
-  utter_scrum_board_2:
-    - text: "El Scrum Board es el tablero que mantenemos en Scrum como soporte visual. En nuestro caso, contamos 
-    \ncon un tablero físico conformado por columnas con las tareas a realizar, las tareas en progreso y las tareas
-    \nfinalizadas. Cada equipo utiliza un color determinado para diferenciarlas.
-    \nAhora vayamos nuevamente a la sala de reuniones."  
-
-    # ---Sprint.Fin---
-
-  utter_sprint_review:
-    - text: "En esta sala se lleva a cabo la etapa final del Sprint de inspección y adaptación. Durante el Sprint Review, 
-    \nel Product Owner y el Develpment Team presentan a los stakeholders el incremento terminado para su inspección 
-    \ny adaptación correspondientes. Se estudia cuál es la situación y se actualiza el Product Backlog con las nuevas 
-    \ncondiciones que puedan afectar al negocio. La duración estimada en el estándar para un Sprint Review es de 8 horas 
-    \npara un Sprint de 4 semanas, aunque habitualmente estas reuniones se ejecutan en un entorno de entre 2 y 3 horas.
-    \nEntendiste que ocurre durante la reunión, avanazamos?"
-
-  utter_sprint_review_2:
-    - text: "Durante la misma, se revisará el incremento terminado. Se mostrará el software funcionando en producción y 
-    \nlos stakeholders tendrán la oportunidad de hacer cuantas preguntas estimen oportunas sobre el mismo. El software 
-    \nfuncionando ha sido validado previamente por el product owner, que se ha encargado de trabajar con el equipo 
-    \ndurante el Sprint para asegurarse que cumple con la Definition of Done y, efectivamente, hace que el Sprint Goal sea válido. 
-    \nEl equipo de desarrollo comenta posteriormente qué ha ocurrido durante el Sprint, los impedimentos que se han encontrado, 
-    \nasí como soluciones tomadas y actualizan a los stakeholders con la situación del equipo. Por último, el Product Owner
-    \nactualiza, con la información de negocio recibida en esta reunión, el Product Backlog para el siguiente Sprint.
-    \nTe parece bien si avanzo hacia la siguiente explicación?"
-
-  utter_increment:
-    - text: "Durante la revisión, se utiliza el Increment para visualizar el resultado del Sprint, este contiene la suma
-    \nde todos los ítems del Product Backlog completados durante un Sprint y el valor de los incrementos de todos los
-    \nSprints pasados. Se entiende?"
-
-  utter_increment_2:
-    - text: "Un incremento es es la suma de todas las tareas, casos de uso, historias de usuario y cualquier elemento 
-    \nque se haya desarrollado durante el Sprint y que será puesto a disposición del usuario final en forma de software, 
-    \naportando un valor de negocio al producto que se está desarrollando. Ahora si continuo, te parece bien?"  
-
-  utter_burndown_chart:
-    - text: "Otro elemento que se utiliza en la revisión del Sprint es el Burdown Chart, es un gráfico de trabajo 
-    \npendiente a lo largo del tiempo que muestra la velocidad a la que se están completando los objetivos, requisitos,
-    \no historias de usuarios.
-    \nQueres saber mas sobre este gráfico o avanzo a la siguiente explicación?"
-
-  utter_burndown_chart_2:
-    - text: "Es una representación gráfica del trabajo por hacer en un proyecto en el tiempo. Usualmente el trabajo
-    \nremanente (o backlog) se muestra en el eje vertical y el tiempo en el eje horizontal. Este diagrama es útil 
-    \npara predecir cuándo se completará todo el trabajo. 
-    \nAhora si continuo con el siguiente tema?"      
-
-  utter_sprint_retrospective:
-    - text: "Por último, se hace una retrospectiva, justo después del Sprint Review. El objetivo de la retrospectiva 
-    \nes hacer de reflexión sobre el último Sprint e identificar posibles mejoras para el próximo. 
-    \nLa duración recomendada por Scrum para un Sprint de 4 semanas es de un máximo de 3 horas, aunque 
-    \nhabitualmente se destina entre 1 y 2 horas a este evento. Entendiste lo que ocurre en este último evento?"
-
-  utter_sprint_retrospective_2:
-    - text: "La retropectiva, en otras palabras, es una reunión que se realiza al final del Sprint para inspeccionar 
-    \nel equipo y levantar mejoras que se apliquen en el siguiente Sprint. Un formato común es analizar qué ha ido 
-    \nbien durante el Sprint, qué ha fallado y qué se puede mejorar. Este formato se puede facilitar pidiendo a los 
-    \nmiembros del equipo Scrum que escriban notas para luego agruparlas y votar aquellos ítems más relevantes, 
-    \ndando la oportunidad a todos de hablar y expresar sus inquietudes. Entendiste?"
+       Todos los componentes tienen acceso a la pizarra.
+       Los componentes pueden producir nuevos objetos de datos que se agregan a la pizarra.
+       Los componentes buscan tipos particulares de datos en la pizarra, y pueden encontrarlos por coincidencia de patrones con la fuente de conocimiento existente.
+  utter_pregunta_patrones/interpreter:
+  - image: https://miro.medium.com/max/1320/1*DrC3T5R4SsdcQY6aXLCRZA.png
+    text: |-
+      Este patrón se usa para diseñar un componente que interpreta programas escritos en un lenguaje dedicado.
+       Especifica principalmente cómo evaluar las líneas de programas, conocidas como oraciones o expresiones escritas en un idioma particular.
+       La idea básica es tener una clase para cada símbolo del idioma.
+  utter_pregunta_concepto/patrones_poo:
+  - text: |-
+      Los patrones de diseño son soluciones habituales a problemas que ocurren con frecuencia en el diseño de software.
+      Son como planos prefabricados que se pueden personalizar para resolver un problema de diseño recurrente en tu código.
+  utter_pregunta_patrones_poo/abstract-factory:
+  - text: Abstract Factory es un patrón de diseño creacional que nos permite producir familias de objetos relacionados sin especificar sus clases concretas.
+  utter_pregunta_patrones_poo/factory-method:
+  - text: Factory Method es un patrón de diseño creacional que proporciona una interfaz para crear objetos en una superclase, mientras permite a las subclases alterar el tipo de objetos que se crearán.
+  utter_pregunta_patrones_poo/builder:
+  - text: |-
+      Builder es un patrón de diseño creacional que nos permite construir objetos complejos paso a paso.
+       El patrón nos permite producir distintos tipos y representaciones de un objeto empleando el mismo código de construcción.
+  utter_pregunta_patrones_poo/prototype:
+  - text: Prototype es un patrón de diseño creacional que nos permite copiar objetos existentes sin que el código dependa de sus clases.
+  utter_pregunta_patrones_poo/singleton:
+  - text: Singleton es un patrón de diseño creacional que nos permite asegurarnos de que una clase tenga una única instancia, a la vez que proporciona un punto de acceso global a dicha instancia.
+  utter_pregunta_patrones_poo/adapter:
+  - text: Adapter es un patrón de diseño estructural que permite la colaboración entre objetos con interfaces incompatibles.
+  utter_pregunta_patrones_poo/bridge:
+  - text: Bridge es un patrón de diseño estructural que te permite dividir una clase grande, o un grupo de clases estrechamente relacionadas, en dos jerarquías separadas (abstracción e implementación) que pueden desarrollarse independientemente la una de la otra.
+  utter_pregunta_patrones_poo/composite:
+  - text: Composite es un patrón de diseño estructural que te permite componer objetos en estructuras de árbol y trabajar con esas estructuras como si fueran objetos individuales.
+  utter_pregunta_patrones_poo/decorator:
+  - text: Decorator es un patrón de diseño estructural que te permite añadir funcionalidades a objetos colocando estos objetos dentro de objetos encapsuladores especiales que contienen estas funcionalidades.
+  utter_pregunta_patrones_poo/facade:
+  - text: Facade es un patrón de diseño estructural que proporciona una interfaz simplificada a una biblioteca, un framework o cualquier otro grupo complejo de clases.
+  utter_pregunta_patrones_poo/flyweight:
+  - text: Flyweight es un patrón de diseño estructural que te permite mantener más objetos dentro de la cantidad disponible de RAM, compartiendo las partes comunes del estado entre varios objetos, en lugar de mantener toda la información en cada objeto.
+  utter_pregunta_patrones_poo/proxy:
+  - text: |-
+      Proxy es un patrón de diseño estructural que te permite proporcionar un sustituto o marcador de posición para otro objeto.
+       Un proxy controla el acceso al objeto original, permitiéndote hacer algo antes o después de que la solicitud llegue al objeto original.
+  utter_pregunta_patrones_poo/chain-of-responsibility:
+  - text: |-
+      Chain of Responsibility es un patrón de diseño de comportamiento que te permite pasar solicitudes a lo largo
+       de una cadena de manejadores.
+       Al recibir una solicitud, cada manejador decide si la procesa o si la pasa al siguiente manejador de la cadena.
+  utter_pregunta_patrones_poo/command:
+  - text: |-
+      Command es un patrón de diseño de comportamiento que convierte una solicitud en un objeto independiente
+       que contiene toda la información sobre la solicitud.
+       Esta transformación te permite parametrizar los métodos con diferentes solicitudes, retrasar o poner en cola la ejecución de una solicitud y soportar operaciones que no se pueden realizar.
+  utter_pregunta_patrones_poo/memento:
+  - text: Memento es un patrón de diseño de comportamiento que te permite guardar y restaurar el estado previo de un objeto sin revelar los detalles de su implementación.
+  utter_pregunta_patrones_poo/iterator:
+  - text: Iterator es un patrón de diseño de comportamiento que te permite recorrer elementos de una colección sin exponer su representación subyacente (lista, pila, árbol, etc.).
+  utter_pregunta_patrones_poo/mediator:
+  - text: |-
+      Mediator es un patrón de diseño de comportamiento que te permite reducir las dependencias caóticas entre objetos.
+       El patrón restringe las comunicaciones directas entre los objetos, forzándolos a colaborar únicamente a través de un objeto mediador.
+  utter_pregunta_patrones_poo/observer:
+  - text: Observer es un patrón de diseño de comportamiento que te permite definir un mecanismo de suscripción para notificar a varios objetos sobre cualquier evento que le suceda al objeto que están observando.
+  utter_pregunta_patrones_poo/state:
+  - text: |-
+      State es un patrón de diseño de comportamiento que permite a un objeto alterar su comportamiento cuando su estado interno cambia.
+       Parece como si el objeto cambiara su clase.
+  utter_pregunta_patrones_poo/strategy:
+  - text: Strategy es un patrón de diseño de comportamiento que te permite definir una familia de algoritmos, colocar cada uno de ellos en una clase separada y hacer sus objetos intercambiables.
+  utter_pregunta_patrones_poo/template-method:
+  - text: Template Method es un patrón de diseño de comportamiento que define el esqueleto de un algoritmo en la  superclase pero permite que las subclases sobrescriban pasos del algoritmo sin cambiar su estructura.
+  utter_pregunta_patrones_poo/visitor:
+  - text: Visitor es un patrón de diseño de comportamiento que te permite separar algoritmos de los objetos sobre los que operan.
+  utter_pregunta_atributos/listado:
+  - text: |-
+      Los atributos de calidad son:
+       Tolerancia a Fallos, Disponiilidad, Mantenibilidad, Performance, Escalabilidad, Seguridad, Usabilidad, Portabilidad e Interoperabilidad
+  utter_pregunta_atributos/tolerancia-a-fallos:
+  - text: Es la capacidad del sistema o componente para operar según lo previsto en presencia de fallos hardware o software.
+  utter_pregunta_atributos/tolerancia-a-fallos_ejemplo:
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Tolerancia a fallos puede ser:
+       El producto tendrá tolerancia a fallas mediante el uso de técnicas de recuperación, transacciones compensatorias y enrutamiento en caso de fallas.
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Tolerancia a fallos puede ser:
+       Debe ser posible que se trate de forma independiente una falla de software del sistema
+  utter_pregunta_atributos/disponibilidad:
+  - text: Capacidad del sistema o componente de estar operativo y accesible para su uso cuando se requiere.
+  utter_pregunta_atributos/disponibilidad_ejemplo:
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Disponibilidad puede ser:
+       Es relevante que el sistema este disponible las 24 horas del día durante todo el año
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Disponibilidad puede ser:
+       El sistema debe estar inactivo un tiempo relativamente corto por año.
+  utter_pregunta_atributos/mantenibilidad:
+  - text: Esta característica representa la capacidad del producto software para ser modificado efectiva y eficientemente, debido a necesidades evolutivas, correctivas o perfectivas.
+  utter_pregunta_atributos/mantenibilidad_ejemplo:
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Mantenibilidad puede ser:
+       Los componentes del sistema deben poder intercambiarse sin afectar el funcionamiento del programa
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Mantenibilidad puede ser:
+       El sistema debe ser fácil de actualizar
+  utter_pregunta_atributos/performance:
+  - text: Esta característica representa el desempeño relativo a la cantidad de recursos utilizados bajo determinadas condiciones
+  utter_pregunta_atributos/performance_ejemplo:
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Performance puede ser:
+       Es importante que el sistema traiga resultados de búsqueda en un tiempo aceptable
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Performance puede ser:
+       El tiempo de espera para que un usuario navegue de una pantalla será inmediato
+  utter_pregunta_atributos/escalabilidad:
+  - text: Es la capacidad de un sistema para funcionar bien cuando se presentan cambios en la demanda o en la carga del mismo.
+  utter_pregunta_atributos/escalabilidad_ejemplo:
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Escalabilidad puede ser:
+       El producto debe ser capaz de soportar y administrar 1000 usuarios simultáneos y remotos
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Escalabilidad puede ser:
+       El sistema de manejo de cuentas debera soportar un número ilimitado de clientes, cuentas y transacciones
+  utter_pregunta_atributos/seguridad:
+  - text: Capacidad de protección de la información y los datos de manera que personas o sistemas no autorizados no puedan leerlos o modificarlos.
+  utter_pregunta_atributos/seguridad_ejemplo:
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Seguridad puede ser:
+       Es importante que el sistema traiga autorización de usuarios y almacenamiento seguro de contraseñas
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Seguridad puede ser:
+       No se introducirán datos inválidos en el sistema
+  utter_pregunta_atributos/usabilidad:
+  - text: Es la capacidad del producto software para ser entendido, aprendido, usado y resultar atractivo para el usuario, cuando se usa bajo determinadas condiciones.
+  utter_pregunta_atributos/usabilidad_ejemplo:
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Usabilidad puede ser:
+       Es importante que el sistema sea intuitivo y de fácil comprensión
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Usabilidad puede ser:
+       La navegación debe diseñarse para ayudar a los usuarios a comprender dónde se encuentran, dónde han estado y adónde pueden ir a continuación
+  utter_pregunta_atributos/portabilidad:
+  - text: Es la capacidad del producto o componente de ser transferido de forma efectiva y eficiente de un entorno hardware, software, operacional o de utilización a otro
+  utter_pregunta_atributos/portabilidad_ejemplo:
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Portabilidad puede ser:
+       El sistema debe funcionar en más de una plataforma móvil (Android, iOS)
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Portabilidad puede ser:
+       El producto debe correr en más de un sistema operativo (Windows, Linux, macOS)
+  utter_pregunta_atributos/interoperabilidad:
+  - text: Es la capacidad de dos o más sistemas o componentes para intercambiar información y/o llevar a cabo sus funciones requeridas cuando comparten el mismo entorno hardware o software
+  utter_pregunta_atributos/interoperabilidad_ejemplo:
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Interoperabilidad puede ser:
+       El producto debe tener la capacidad de interpretar correctamente los datos que se intercambian
+  - text: |-
+      Por ejemplo, un requerimiento no funcional que se encasilla en Interoperabilidad puede ser:
+       El sistema debe poder comunicarse fácilmente con otros servicios
+  utter_pregunta_concepto/fdd_clarificacion:
+  - text: Te lo explico con otras palabras... fdd es un metodologia agil para el desarrollo de sistemas que incluye el monitoreo constante de porceso
+  utter_pregunta_concepto/atr-calidad_clarificacion:
+  - text: Y mira, los atributos de calidad son aspectos importates impotantes de la arquitectura de software, indica que tan bien el sistema satisface las necesidades de las partes interesadas
+  utter_pregunta_concepto/hook_clarificacion:
+  - text: Hooking se utiliza para muchos propósitos, incluyendo la depuración de programas y la ampliación de la funcionalidad
+  utter_pregunta_concepto/req_func_clarificacion:
+  - text: Es importante saber que un requisito funcional define una función del sistema de software o sus componentes.
+  utter_pregunta_concepto/req_no_func_clarificacion:
+  - text: 'Se trata de requisitos que no se refieren directamente a las funciones específicas suministradas por el sistema (características de usuario), sino a las propiedades del sistema: rendimiento, seguridad, disponibilidad.'
+  utter_pregunta_concepto/diferencia_req_func_no_func_clarificacion:
+  - text: |-
+      En resumen, el requisito funcional es describir el comportamiento del sistema en relación con la funcionalidad del sistema.
+       El requisito no funcional elabora una característica de rendimiento del sistema.
+  utter_pregunta_atributos/tolerancia-a-fallos_clarificacion:
+  - text: |-
+      Un diseño tolerante a fallos es un sistema que está capacitado para continuar su funcionamiento cuando
+       algún componente del sistema falla
+  utter_pregunta_atributos/disponibilidad_clarificacion:
+  - text: En pocas palabras, la disponibilidad es la proporción de tiempo que un sistema está en condiciones de funcionamiento.
+  utter_pregunta_atributos/mantenibilidad_clarificacion:
+  - text: |-
+      La mantenibilidad se refiere a la facilidad con que se pueden ejecutar las tareas de gestión de mantenimiento
+       del sistema
+  utter_pregunta_atributos/performance_clarificacion:
+  - text: En pocas palabras, desempeño con respecto al rendimiento de una computadora, un dispositivo,  un sistema operativo, un programa o una conexión a una red
+  utter_pregunta_atributos/escalabilidad_clarificacion:
+  - text: Se entiende por escalabilidad a la capacidad de adaptación y respuesta de un sistema
+  utter_pregunta_atributos/seguridad_clarificacion:
+  - text: Es la medida sobre la habilidad del sistema para resistir usos no autorizados mientras sigue proveyendo sus servicios a los usuarios legítimos.
+  utter_pregunta_atributos/usabilidad_clarificacion:
+  - text: Simplificando, es el grado de facilidad del sistema para ser operado
+  utter_pregunta_atributos/portabilidad_clarificacion:
+  - text: Resumiendo, es el grado en el que los datos tienen atributos que les permiten ser instalados,  reemplazados o eliminados de un sistema a otro
+  utter_pregunta_atributos/interoperabilidad_clarificacion:
+  - text: En pocas palabras, el atrbutos de calidad interoperabilidad es responsable del funcionamiento y la transmisión de datos y su intercambio con otros sistemas externos
+  utter_pregunta_concepto/scrum_ejemplo:
+  - text: |-
+      Un ejemplo del uso de Scrum es Spotify, ya que dieron mucha importancia al rol del Scrum Master y al del Product Owner.
+       Gracias a esta metodología, descubrieron y entendieron las necesidades reales de los clientes y realizaron un buen trabajo de equipo coordinándose en la empresa.
+  utter_pregunta_concepto/agil_ejemplo:
+  - text: |-
+      Existen diferentes opciones como Scrum, Kanban, entre otras;
+       todas ellas se guían a través de un patrón establecido por el Manifiesto Ágil
+  utter_pregunta_concepto/fdd_ejemplo:
+  - text: ''
+  utter_pregunta_concepto/hook_ejemplo:
+  - text: Hay varios ejemplos, como incluir la interceptación de mensajes de eventos de teclado o de ratón antes  de que lleguen a una aplicación o interceptar llamadas de sistema operativo para supervisar el comportamiento o modificar la función de una aplicación u otro componente.
+  utter_pregunta_concepto/diferencia_req_func_no_func_ejemplo:
+  - text: |-
+      Los requisitos no funcionales a veces se definen en términos de métricas es decir,  algo que se puede medir sobre el sistema para hacerlos más tangibles.
+       Los requisitos no funcionales también pueden describir aspectos del sistema que no se relacionan con su ejecución,  sino con su evolución a lo largo del tiempo, por ejemplo, mantenibilidad, extensibilidad, documentación, etc.
+  utter_pregunta_concepto/diseño:
+  - text: |-
+      Se lo define como el proceso de aplicar ciertas técnicas y principios con el propósito de definir un dispositivo, un proceso o un Sistema, con suficientes detalles como para permitir su interpretación y realización física.
+       El Diseño de Software cuenta con distintas etapas, pero podemos resaltar la etapa del Diseño Arquitectónico, que describe la estructura y el comportamiento del Software consigo mismo, con los sistemas que operan junto con el y con los usuarios que lo emplean.
+  utter_pregunta_concepto/diseño_ejemplo:
+  - text: Hay miles de ejemplos, te puedo ayudar a diseñar! Así armamos tu propio diseño, puede ser el de diseño de sistemas de operaciones, páginas web, dispositivos móviles y mas!
+  utter_pregunta_concepto/diseño_clarificacion:
+  - text: En otras palabras y muy muy breve, es el proceso de definición de la arquitectura, módulos, interfaces y datos de un sistema para satisfacer unos requisitos previamente especificados.
+forms: {}
+e2e_actions: []
